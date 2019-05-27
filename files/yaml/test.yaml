@@ -1,0 +1,150 @@
+
+- hosts: dh-all-server 
+  gather_facts: no
+  vars:
+    alpha: ['a','b','c']
+    numbers: [1,2,3]
+    version: ["1.0.2k-fips","1.0.1e-fips"]
+  tasks:
+    - name: create directory for ansible custom facts
+      file: state=directory recurse=yes path=/etc/ansible/fact.d owner=root group=root
+      #directory--目录,link--软连接,touch--创建文件,absent--删除文件
+    - name: install custom impi fact
+      shell: cp /etc/ansible/roles/files/test.txt /etc/ansible/fact.d
+      #copy: src=/etc/ansible/roles/files/test.txt  dest=/etc/ansible/fact.d
+      tags:
+        - copy
+    - name: re-read facts after adding custom fact
+      setup: filter=ansible_local
+      tags:
+        - re-read
+    - name: pause
+      pause: seconds=20
+      tags:
+        - pause a moment
+    - name: test
+      shell: echo "only on Red Hat 6,derivatives,and later"
+      when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int >= 6
+      tags:
+        - test
+    - name: test2
+      shell: echo "I've got '{{ foo }}' and am not afraid to use it"
+      when: foo is defined
+      tags:
+        - test2
+    - name: test3
+      command: echo {{ item }}
+      with_items: [0,2,4,6,8,10]
+      when: item > 5
+      tags:
+        - test3
+    - name: register vars 1
+      shell: cat /etc/ansible/ansible.cfg
+      register: test_content
+      tags:
+        - register1
+    
+    - name: register vars 2
+      shell: echo "test_content contains the word hi"
+      when: test_content.stdout.find("hi") != -1
+      tags:
+        - register2
+    - name: register vars 3
+      command: ls /home
+      register: home_dirs
+      tags:
+        - register3
+    - name: register vars 4
+      file: path=/root/duws/{{ item }} src=/home/{{ item }} state=link force=yes 
+      with_items: "{{ home_dirs.stdout_lines }}"
+      tags:
+        - register4
+    - name: gather facts1
+      shell: echo "hi"
+      when: ansible_os_family == "RedHat" and  ansible_architecture == "x86_64" and ansible_lsb.major_release|int== 7 
+      tags:
+        - gather facts1
+    - name: gather facts2
+      shell: echo "hi"
+      when: ansible_os_family == "RedHat" and  ansible_architecture == "x86_64" and ansible_lsb.major_release|int== 6
+      tags:
+        - gather facts2
+    - name: gather facts3
+      shell: echo "hi" 
+      when: ansible_os_family == "RedHat" and  ansible_architecture == "i386" and ansible_lsb.major_release|int == 7
+      tags:
+        - gather facts3
+    - name: gather facts4
+      shell: echo "hi"
+      when: ansible_os_family == "RedHat" and  ansible_architecture == "i386" and ansible_lsb.major_release|int == 6
+      tags:
+        - gather facts4
+    - name: gather facts5
+      shell: echo "hi" 
+      when: ansible_os_family == "Debian" and  ansible_architecture == "i386"
+      tags:   
+        - gather facts5
+    - name: gather facts6
+      shell: echo "hi" 
+      when: ansible_os_family == "Debian" and  ansible_architecture == "x86_64"
+      tags:   
+        - gather facts6
+    - name: install lsb_release
+      become: yes
+      become_user: root
+      become_method: sudo
+      yum: name=redhat-lsb-core-4.1-27.el7.centos.1.x86_64 state=installed update_cache=true
+      tags:
+        - install lsb_release
+    - name: install lsb_release2
+      become: yes
+      become_user: root
+      become_method: sudo
+      yum: name=redhat-lsb-core-4.0-7.el6.centos.x86_64 state=installed update_cache=true
+      tags:
+        - install lsb_release2
+    - name: push shell
+      copy: src=./script/discover_port.sh dest=/etc/zabbix/script/discover_port.sh owner=root group=root mode=755
+      tags:
+        - push shell
+    - name: update file
+      shell: echo 'UserParameter=tcpportlisten,/usr/local/zabbix_agent/sbin/discovertcpport.sh "$1"' >> /etc/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+      tags:
+        - update file
+    - name: restart zabbix
+      service: name=zabbix-agent state=restarted
+      tags:
+        - restart zabbix
+    - name: give users access to multiple databases
+      mysql_user: name={{ item[0] }} priv={{ item[1] }}.*:ALL append_privs=yes password=foo
+      with_nested:
+        - [ 'alice', 'bob' ]
+        - [ 'clientdb', 'employeedb', 'providerdb' ]
+      tags:
+        - operate mysql
+    - debug: msg="{{ item.0 }} and {{ item.1 }}"
+      with_together:
+        - "{{ alpha }}"
+        - "{{ numbers }}"
+      tags:
+        - debug
+    - name: setup mysql user
+      mysql_user: name={{ item.0.user }} password={{ item.0.mysql.password }} host={{ item.1 }} priv={{ item.0.mysql.privs | join('/') }}
+      with_subelements:
+        - users
+        - mysql.hosts
+      tags:
+        - ok1
+    - name: get openssl version
+      shell: openssl version | awk -F ' ' '{if($2=="1.0.2k-fips"){print $2}}'
+      register: openssl_result
+    - name: echo "{{ result }}"
+      shell: echo "hi"
+      when: openssl_result.stdout.find('0') != -1
+    - name: test
+      become: yes
+      become_user: root
+      become_method: sudo
+      shell: /etc/init.d/zabbix-agent restart
+      tags:
+        - start

@@ -1,0 +1,73 @@
+
+- hosts: 135.251.206.158
+  remote_user: blueadmin
+  gather_facts: false
+  tasks:
+  - name: no tty
+    shell: setsid script -c "sudo sed -i 's/requiretty/\!requiretty/g' /etc/sudoers"
+    tags:
+      - no tty
+  - name: stop firewalld
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=firewalld state=stopped
+    tags:
+      - stop firewalld
+  - name: update-zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: echo 'zabbix ALL=(ALL)  NOPASSWD:ALL' >> /etc/sudoers
+    tags:   
+      - update-zabbix
+  - name: stop zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=zabbix-agent state=stopped
+    tags:
+      - stop zabbix
+  - name: push-rpm-64
+    shell: scp -o StrictHostKeyChecking=no 135.251.193.81:/tmp/zabbix-agent_3.0.24-1+xenial_amd64.deb /tmp
+    tags:
+      - push-rpm-64
+  - name: push-shell-64
+    shell: scp -o StrictHostKeyChecking=no 135.251.193.81:/tmp/zabbix-client64-ubuntu.sh /tmp
+    tags:
+      - push-shell-64
+  - name: remove zabbix-package
+    become: yes
+    become_user: root
+    become_method: sudo 
+    shell: apt remove -y zabbix-agent:amd64
+    tags:
+      - remove zabbix-package
+  - name: install-zabbix-64
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sh /tmp/zabbix-client64-ubuntu.sh
+    tags:
+      - install-zabbix-64
+  - name: enable-remotecommand1
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sed -i 's/# EnableRemoteCommands=0/EnableRemoteCommands=1/g' /etc/zabbix/zabbix_agentd.conf
+    tags:   
+      - enable-remotecommand1
+  - name: enable-remotecommand2
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sed -i 's/# EnableRemoteCommands=1/EnableRemoteCommands=1/g' /etc/zabbix/zabbix_agentd.conf
+    tags:
+      - enable-remotecommand2
+  - name: restart zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=zabbix-agent state=restarted
+    tags:
+      - restart zabbix

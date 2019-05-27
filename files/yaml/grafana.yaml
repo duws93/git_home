@@ -1,0 +1,33 @@
+
+- hosts: test
+  gather_facts: false
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: install grafana repo
+      shell: yum install -y https://grafanarel.s3.amazonaws.com/builds/grafana-4.1.2-1486989747.x86_64.rpm
+      tags:
+        - install grafana repo
+    - name: reload the config
+      shell: systemctl daemon-reload
+    - name: start the grafana
+      service: name=grafana state=started enabled=yes
+    - name: install plugins
+      shell: yum install -t fontconfig freetype* urw-fonts
+    - name: install zabbix plugin
+      shell: grafana-cli plugins install alexanderzobnin-zabbix-app
+    - name: restart grafana
+      service: name=grafana state=restarted
+    - name: install git tool
+      shell: yum install -y git
+    - name: upate grafana-zabbix-app
+      shell: git clone https://github.com/alexanderzobnin/grafana-zabbix-app /var/lib/grafana/plugins/grafana-zabbix-app
+    - name: restart grafana
+      service: name=grafana state=restarted
+    - name: pull grafana-app
+      shell: git pull
+    - name: install other plugins
+      shell: grafana-cli plugins install grafana-piechart-panel grafana-clock-panel briangann-gauge-panel natel-discrete-panel vonage-status-panel
+    - name: restart grafana
+      service: name=grafana state=restarted

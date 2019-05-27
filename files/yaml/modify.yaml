@@ -1,0 +1,91 @@
+
+- hosts: 135.251.206.37 
+  remote_user: blueadmin
+  gather_facts: false
+  tasks:
+  - name: no tty
+    shell: setsid script -c "sudo sed -i 's/requiretty/\!requiretty/g' /etc/sudoers"
+    tags:
+      - no tty
+  - name: stop firewalld
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=firewalld state=stopped
+    tags:
+      - stop firewalld
+  - name: edit-config
+    shell: setsid script -c "sudo sed -i 's/gpgcheck=1/gpgcheck=0/g' /etc/yum.conf"
+    tags:   
+      - edit-config
+  - name: update-zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: echo 'zabbix ALL=(ALL)  NOPASSWD:ALL' >> /etc/sudoers
+    tags:   
+      - update-zabbix
+  - name: stop zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=zabbix-agent state=started
+    tags:
+      - stop zabbix
+  - name: push-rpm-64
+    shell: scp -o StrictHostKeyChecking=no 135.251.193.81:/tmp/zabbix-agent-3.0.24-1.el6.x86_64.rpm /tmp
+    tags:
+      - push-rpm-64
+  - name: push-shell-64
+    shell: scp -o StrictHostKeyChecking=no 135.251.193.81:/tmp/zabbix-client64-centos.sh /tmp
+    tags:
+      - push-shell-64
+  - name: remove zabbix-package
+    become: yes
+    become_user: root
+    become_method: sudo 
+    yum: name=zabbix-agent-3.0.24-1.el6.x86_64 state=removed
+    tags:
+      - remove zabbix-package
+  - name: install-zabbix-64
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sh /tmp/zabbix-client64.sh
+    tags:
+      - install-zabbix-64
+  - name: change PidFile directory
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sed -i 's/^PidFile/#PidFile/g' /etc/zabbix/zabbix_agentd.conf
+    tags:
+      - change PidFile directory
+  - name: change PidFile directory2
+    become: yes
+    become_user: root
+    become_method: sudo 
+    shell: sed -i 's/# PidFile/PidFile/g' /etc/zabbix/zabbix_agentd.conf
+    tags:
+      - change PidFile directory2
+  - name: enable-remotecommand1
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sed -i 's/# EnableRemoteCommands=0/EnableRemoteCommands=1/g' /etc/zabbix/zabbix_agentd.conf
+    tags:   
+      - enable-remotecommand1
+  - name: enable-remotecommand2
+    become: yes
+    become_user: root
+    become_method: sudo
+    shell: sed -i 's/# EnableRemoteCommands=1/EnableRemoteCommands=1/g' /etc/zabbix/zabbix_agentd.conf
+    tags:
+      - enable-remotecommand2
+  - name: restart zabbix
+    become: yes
+    become_user: root
+    become_method: sudo
+    service: name=zabbix-agent state=restarted
+    tags:
+      - restart zabbix

@@ -1,0 +1,46 @@
+
+- hosts: test
+  gather_facts: false
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: update yum
+      shell: yum update
+      tags:
+        - update yum
+    - name: install dependent package
+      shell: yum install -y yum-utils device-mapper-persistent-data lvm2
+      tags:
+        - install package
+    - name: install docker repo
+      shell: yum-config-manager -add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+      tags:
+        - install repo
+    - name: make cache
+      shell: yum makecache fast
+      tags:
+        - make cache
+    - name: install docker-ce
+      shell: yum install -y docker-ce
+      tags:
+        - install docker
+    - name: create docker-service directory
+      shell: mkdir -p /etc/systemd/system/docker.service.d
+      tags:
+        - create docker-service directory
+    - name: create docker http_proxy.conf
+      shell: echo '[Service] \
+                   Environment="HTTP_PROXY=http://proxy.lbs.alcatel-lucent.com:8000/" \
+                   Environment="HTTPS_PROXY=http://proxy.lbs.alcatel-lucent.com:8000/" \
+                   Environment="NO_PROXY=localhost,127.0.0.0/8,::1,/var/run/docker.sock,.alcatel-lucent.com,.nokia.com,.alcatel.fr,138.203.0.0/16,.eecloud.nsn-net.net,135.251.0.0/16" ' >> /etc/systemd/system/docker.service.d/http-proxy.conf
+      tags:
+        - create docker http_proxy.conf
+    - name: daemon-reload
+      shell: systemctl daemon-reload
+      tags:
+        - daemon-reload
+    - name: start docker 
+      service: name=docker state=started enabled=yes
+      tags:
+        - start docker

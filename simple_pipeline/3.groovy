@@ -3,7 +3,7 @@ pipeline{
   agent{
     dockerfile{
       label "duws-3"
-      filename "Dockerfile.alternate"
+      filename "simple_pipeline/Dockerfile.alternate"
       args "-v /tmp:/tmp -p 8000:8000"
     }
   }

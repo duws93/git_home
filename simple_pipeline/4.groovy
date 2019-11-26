@@ -18,7 +18,7 @@ pipeline{
       }
     }
     
-    stage{
+    stage("foo"){
       steps{
         writeFile text: 'hello', file: 'msg out'
         step([$class: 'ArtifactArchiver', artifacts: 'msg.out', fingerprint: true])

@@ -2,7 +2,7 @@ pipeline {
   environment {
     //环境变量和凭证检索
     some_var = "some value"
-    cred1 = credentials("	github_token_jenkins")
+    cred1 = credentials("github_token_jenkins")
     inbetween = "something in between"
     cred2 = credentials("gitlab-token")
     other_var = "${some_var}"

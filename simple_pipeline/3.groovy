@@ -11,7 +11,7 @@ pipeline{
   stages{
     stage("foo"){
       steps{
-        sh 'cat hi-there'
+        sh 'cat simple_pipeline/hi-there'
         sh 'echo "the answer is 42.5"'
       }
     }

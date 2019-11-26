@@ -1,0 +1,5 @@
+FROM ubuntu:latest
+MAINTAINER duws wenshu.du.ext@nokia-sbell.com
+ENV https_proxy http://135.251.33.31:8080
+ENV http_prpxy http://135.251.33.31:8080
+CMD ["/bin/bash"]

@@ -26,6 +26,7 @@ pipeline{
     stage("local2"){
       steps{
         sh 'echo "in local2 stage,bar is $bar"'
+      }
     }
   }
   post{

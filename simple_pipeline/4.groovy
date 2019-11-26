@@ -26,7 +26,7 @@ pipeline{
   //在stage内部只能使用skipDefaultCheckout,timeout,retry,timestamps
   options {
     //指定build history与console 保存的数量
-    buildDiscarder(logRotator(numToKeepStr:'1'))
+    buildDiscarder(logRotator(numToKeepStr:'5'))
     //设置job不能够同时运行
     disableConcurrentBuilds()
     //跳过默认的代码check out

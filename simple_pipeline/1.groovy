@@ -5,7 +5,6 @@ pipeline {
     some_var = "some value"
     cred1 = credentials("5f534b22-b547-4c16-ae2a-e166fb0c6e33")
     inbetween = "something in between"
-    cred2 = credentials("6476a884-3220-431c-bc95-8f9e96386c9d")
     other_var = "${some_var}"
   }
   
@@ -21,7 +20,6 @@ pipeline {
         
         //凭证变量在console中将被mask处理，但并不存档在文件中
         sh 'echo $cred1 > cred1.txt'
-        sh 'echo $cred2 > cred2.txt'
         archive "**/*.txt"
       }
     }

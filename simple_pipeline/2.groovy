@@ -1,7 +1,7 @@
 #!groovy
 pipeline{
   environment{
-    foo = credentials("foocred")
+    foo = credentials("f1d1e486-4a23-43fe-9f45-19e17e556705")
   }
   
   agent { label "duws-3" }

@@ -55,6 +55,7 @@ pipeline{
         echo "start"
         script {
           String res = env.MAKE_RESULT
+          echo "res is ${res}"
           if ( res != null ){
             echo "setting build result ${res}"
             currentBuild.result = res

@@ -1,10 +1,11 @@
+#!groovy
 pipeline {
   environment {
     //环境变量和凭证检索
     some_var = "some value"
-    cred1 = credentials("github_token_jenkins")
+    cred1 = credentials("5f534b22-b547-4c16-ae2a-e166fb0c6e33")
     inbetween = "something in between"
-    cred2 = credentials("gitlab-token")
+    cred2 = credentials("6476a884-3220-431c-bc95-8f9e96386c9d")
     other_var = "${some_var}"
   }
   

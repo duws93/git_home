@@ -1,7 +1,7 @@
 #!groovy
 pipeline{
   agent{
-    label "duws-3"
+    label { "duws-3" }
     dockerfile{
       filename "Dockerfile.alternate"
       args "-v /tmp:/tmp -p 8000:8000"

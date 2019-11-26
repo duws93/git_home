@@ -64,8 +64,27 @@ pipeline{
     
     stage("foo2"){
       steps{
+        script{
+          foo = docker.image("ubuntu")
+          env.bar = "${foo.imageName()}"
+          echo "foo: ${foo.imageName()}"
+        }
+      }
+    }
+    stage("bar"){
+      steps{
+        echo "bar is : ${env.bar}"
+        echo "foo is : ${foo.imageName()}"
+      }
+    }
+    
+    stage("foo3"){
+      steps{
         echo "start"
         script {
+          //除环境变量，变量赋值只能在脚本中完成
+          //复杂的全局变量，只能在脚本块运行
+          //env变量也可以在脚本中设置
           String res = env.MAKE_RESULT
           echo "res is ${res}"
           if ( res != null ){

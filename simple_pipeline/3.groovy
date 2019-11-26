@@ -15,6 +15,18 @@ pipeline{
         sh 'echo "the answer is 42.5"'
       }
     }
+    stage("local"){
+      environment{
+        bar = "stage"
+      }
+      steps{
+        sh 'echo "in local stage,bar is $bar"'
+      }
+    }
+    stage("local2"){
+      steps{
+        sh 'echo "in local2 stage,bar is $bar"'
+    }
   }
   post{
          success{

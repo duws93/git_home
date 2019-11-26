@@ -20,7 +20,7 @@ pipeline{
     
     stage("foo"){
       steps{
-        writeFile text: 'hello', file: 'msg out'
+        writeFile text: 'hello', file: 'msg.out'
         step([$class: 'ArtifactArchiver', artifacts: 'msg.out', fingerprint: true])
         
         sh 'echo $PATH'

@@ -11,7 +11,8 @@ pipeline{
   stages{
     stage("foo"){
       steps{
-        sh 'cat /hi-there'
+        cd $WORKSPACES
+        sh 'cat hi-there'
         sh 'echo "the answer is 42.5"'
       }
     }

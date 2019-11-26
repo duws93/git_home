@@ -1,12 +1,35 @@
 #!groovy
 pipeline{
+  
+  //这定义了在运行作业或使用默认值之前填充的作业参数
+  parameters {
+    booleanParam(defaultValue: true, description: '', name: 'flag')
+    string(defaultValue: '', description: '', name: 'SOME_STRING')
+  }
+  
   environment{
-    foo = "bar"
-    build_num_env = currentBuild.getNumber()
-    another_env = "${currentBuild.getNumber()}"
-    inherited_env = "\${build_num_env} is inherited"
-}
+  foo = "bar"
+  build_num_env = currentBuild.getNumber()
+  another_env = "${currentBuild.getNumber()}"
+  inherited_env = "\${build_num_env} is inherited"
+  }
+  
   agent { label "duws-3"}
+
+  //触发器定义如何触发作业。
+  //在这里，作业仍然可以手动或由webhook触发。
+  triggers {
+    cron('@daily')
+  }
+  
+  //选项涵盖应用于整个管道的所有其他作业属性或包装器函数。
+  options {
+    buildDiscarder(logRotator(numToKeepStr:'1'))
+    disableConcurrentBuilds()
+    skipDefaultCheckout(true)
+    timeout(time: 5, unit: 'MINUTES')
+    timestamps()
+  }
   
   stages{
     stage("environment"){
@@ -24,6 +47,42 @@ pipeline{
         step([$class: 'ArtifactArchiver', artifacts: 'msg.out', fingerprint: true])
         
         sh 'echo $PATH'
+      }
+    }
+    
+    stage("foo2"){
+      steps{
+        echo "start"
+        script {
+          String res = env.MAKE_RESULT
+          if ( res != null ){
+            echo "setting build result ${res}"
+            currentBuild.result = res
+          }else {
+            echo " all is well"
+          }
+        }
+      }
+      post
+      {
+        aborted {
+          echo "Stage 'foo2' WAS ABORTED"
+        }
+        always {
+          echo "Stage 'foo2' finished"
+        }
+        changed {
+          echo "Stage HAVE CHANGED"
+        }
+        failure {
+          echo "Stage FAILED"
+        }
+        success {
+          echo "Stage was Successful"
+        }
+        unstable {
+          echo "Stage is Unstable"
+        }
       }
     }
   }

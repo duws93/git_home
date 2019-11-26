@@ -23,11 +23,23 @@ pipeline{
   }
   
   //选项涵盖应用于整个管道的所有其他作业属性或包装器函数。
+  //在stage内部只能使用skipDefaultCheckout,timeout,retry,timestamps
   options {
+    //指定build history与console 保存的数量
     buildDiscarder(logRotator(numToKeepStr:'1'))
+    //设置job不能够同时运行
     disableConcurrentBuilds()
+    //跳过默认的代码check out
     skipDefaultCheckout(true)
+    //一旦构建状态变得unstable，跳过该阶段
+    skipStagesAfterUnstable()
+    //在工作空间的子目录进行check out
+    //checkoutToSubdirectory('children_path')
+    //设置jenkins运行的超时时间，超过超时时间，job会自动被终止
     timeout(time: 5, unit: 'MINUTES')
+    //设置retry作用域范围的重试次数
+    retry(3)
+    //为控制台输出增加时间戳
     timestamps()
   }
   

@@ -6,9 +6,10 @@ pipeline {
     stage("foo"){
       steps{
         dir("/root/workspace/tools"){
-          tools{
-            maven "apache-maven-3.6.3"
-          }
+          echo "hi"
+        }
+        tools{
+          maven "apache-maven-3.6.3"
         }
       }
     }

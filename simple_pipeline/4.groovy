@@ -120,7 +120,7 @@ pipeline{
     stage("foo4"){
       steps{
         //任何管道步骤和包装器都可以在步骤中使用，也可以嵌套
-        timeout(time:5, util:"SECONDS"){
+        timeout(time:5, unit:"SECONDS"){
           retry(5){
             echo "hi"
           }

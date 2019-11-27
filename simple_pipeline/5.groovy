@@ -4,12 +4,13 @@ pipeline {
   agent { label "duws-3"}
   stages{
     stage("foo"){
+      tools{
+        maven "apache-maven-3.6.3"
+      }
       steps{
-        dir("/root/workspace/tools"){
-          echo "hi"
-        }
-        tools{
-          maven "apache-maven-3.6.3"
+        dir("/root/tools/hudson.tasks.Maven_MavenInstallation/apache-maven-3.6.3/bin"){
+          sh './mvn -v'
+          sh 'printenv | grep env'
         }
       }
     }

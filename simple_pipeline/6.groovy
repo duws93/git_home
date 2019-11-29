@@ -1,6 +1,6 @@
 #！groovy
 pipeline {
-  agent any
+  agent { label "duws-3" }
 
   environment {
       // This returns 0 or 1 depending on whether build number is even or odd
@@ -20,6 +20,17 @@ pipeline {
       }
       steps {
         echo "World"
+      }
+    }
+    stage("always skip"}{
+      when{
+        expression {
+          echo "should i run?"
+          return false
+        }
+      }
+      steps{
+        echo "over"
       }
     }
   }

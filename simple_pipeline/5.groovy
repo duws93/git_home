@@ -19,10 +19,9 @@ pipeline {
     }
     
     stage("evaluate master"){
+      //适用于多分支pipeline进行判断
       when{
-        not{
-          branch "master"
-        }
+        branch "master"
       }
       steps{
         echo "this is master branch"

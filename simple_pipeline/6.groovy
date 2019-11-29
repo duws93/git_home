@@ -33,5 +33,10 @@ pipeline {
         echo "over"
       }
     }
+    stage("last stage"){
+      steps{
+        echo "last stage"
+      }
+    }
   }
 }

@@ -22,7 +22,7 @@ pipeline {
         echo "World"
       }
     }
-    stage("always skip"}{
+    stage("always skip"){
       when{
         expression {
           echo "should i run?"

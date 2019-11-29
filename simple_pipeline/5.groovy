@@ -20,7 +20,9 @@ pipeline {
     
     stage("evaluate master"){
       when{
-        branch "master"
+        not{
+          branch "master"
+        }
       }
       steps{
         echo "this is master branch"

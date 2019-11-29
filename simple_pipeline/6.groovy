@@ -9,13 +9,13 @@ pipeline {
       }
     }
     stage("Evaluate Master") {
-      when {
-        // skip this stage unless on Master branch
-        branch "master"
-      }
-      steps {
-        echo "World"
-        echo "Heal it"
+      steps{
+        script{
+          if(env.GIT_NAME == "dev"){
+            echo 'deploy to dev"
+          }
+        }
+        sh 'echo $env.GIT_NAME'
       }
     }
   }

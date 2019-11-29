@@ -12,7 +12,7 @@ pipeline {
       steps{
         script{
           if(env.GIT_NAME == "dev"){
-            echo 'deploy to dev"
+            echo "deploy to dev"
           }
         }
         sh 'echo $env.GIT_NAME'

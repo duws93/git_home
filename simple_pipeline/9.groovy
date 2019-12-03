@@ -9,7 +9,7 @@ pipeline{
     stage('build'){
       input{
         message "press ok to continue"
-        submitter "admin,wenshud'
+        submitter "admin,wenshud"
         parameters{
           strings(name:'username',defaultValue: 'user',description:'username of the user pressing ok')
         }

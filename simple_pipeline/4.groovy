@@ -3,8 +3,8 @@ pipeline{
   
   //这定义了在运行作业或使用默认值之前填充的作业参数
   parameters {
-    booleanParam(defaultValue: true, description: '', name: 'flag')
-    string(defaultValue: '', description: '', name: 'SOME_STRING')
+    booleanParam(defaultValue: true, description: 'flag 默认为true', name: 'flag')
+    string(defaultValue: 'default', description: '默认是default', name: 'SOME_STRING')
   }
   
   environment{
@@ -18,6 +18,7 @@ pipeline{
 
   //触发器定义如何触发作业。
   //在这里，作业仍然可以手动或由webhook触发。
+  //类型cron,pollSCM
   triggers {
     cron('@daily')
   }
@@ -27,7 +28,7 @@ pipeline{
   options {
     //指定build history与console 保存的数量
     buildDiscarder(logRotator(numToKeepStr:'5'))
-    //设置job不能够同时运行
+    //设置job不能够并行操作
     disableConcurrentBuilds()
     //跳过默认的代码check out
     skipDefaultCheckout(true)
@@ -55,9 +56,12 @@ pipeline{
     
     stage("foo"){
       steps{
+        //产生文件flag,可用于后期内容检索判断
         writeFile text: 'hello', file: 'msg.out'
+        //step接受类型为map的参数来调用
         step([$class: 'ArtifactArchiver', artifacts: 'msg.out', fingerprint: true])
-        
+        //artifacts会产生不可变文件，用于用户检索
+        //fingerprint是保存文件指纹记录，用于追踪多项目之间文件使用的关联
         sh 'echo $PATH'
       }
     }

@@ -1,7 +1,7 @@
 pipeline{
   agent{
     node{
-      label "duws-3"
+      label "duws-5"
       customWorkspace '/root/workspace/pipeline'
     }
   }

@@ -68,6 +68,7 @@ pipeline{
     
     stage("foo2"){
       steps{
+        //script设置的变量为全局变量，其他stage也可应用
         script{
           foo = docker.image("ubuntu")
           env.bar = "${foo.imageName()}"

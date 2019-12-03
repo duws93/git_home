@@ -5,6 +5,14 @@ pipeline{
   }
   
   agent { label "duws-3" }
+  /*类似使用，但可使用customWorkspace来自定义工作空间
+  agent{
+    node{
+      label "duws-3"
+      customWorkspace '/root/dir'
+    }
+  }
+  */
   
   stages{
     stage("foo"){
@@ -13,11 +21,13 @@ pipeline{
         sh 'echo "foo_user is $FOO_USR"'
         sh 'echo "foo_psw is $FOO_PSW"'
         
+        //定义切换到指定目录操作
         dir("combined"){
           sh 'echo $FOO > foo.txt'
         }
         sh 'echo $FOO_PSW > foo_psw.txt'
         sh 'echo $FOO_USR > foo_user.txt'
+        //关联之前操作的txt文件
         archive "**/*.txt"
       }
     }

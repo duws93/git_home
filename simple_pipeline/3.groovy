@@ -1,9 +1,12 @@
 #!groovy
 pipeline{
   agent{
+    //应用在多分支pipeline或者SCMchang场景
     dockerfile{
       label "duws-3"
+      //定义dockerfile来运行docker命令
       filename "simple_pipeline/Dockerfile.alternate"
+      //dockers命令运行挂载参数
       args "-v /tmp:/tmp -p 8000:8000"
     }
   }
@@ -16,6 +19,7 @@ pipeline{
       }
     }
     stage("local"){
+      //设置局部环境变量
       environment{
         bar = "stage"
       }

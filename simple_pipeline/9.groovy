@@ -18,6 +18,32 @@ pipeline{
         echo "user: ${username} said ok"
       }
     }
+    stage('run test'){
+      parallel{
+        stage('test on duws-2'){
+          agent { 
+            node{
+              label "duws-2"
+              customWorkspace '/root/workspace/pipeline'
+            }
+          }
+          steps{
+            echo "work on duws-2"
+          }
+        }
+        stage('test on duws-1'){
+          agent {
+            node{
+              label "duws-1"
+              customWorkspace '/root/workspace/pipeline'
+            }
+          }
+          steps{
+            echo "work on duws-1"
+          }
+        }
+      }
+    }
   }
 }
   

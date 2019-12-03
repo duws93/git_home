@@ -1,8 +1,9 @@
-#!groovy
 pipeline{
   agent{
-    label "duws-3"
-    customWorkspace '/root/workspace/pipeline'
+    node{
+      label "duws-3"
+      customWorkspace '/root/workspace/pipeline'
+    }
   }
   stages{
     stage('build'){

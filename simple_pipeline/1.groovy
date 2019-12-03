@@ -2,13 +2,14 @@
 pipeline {
   environment {
     //环境变量和凭证检索
+    //凭证若为secret text，直接包含text内容；若是用户名和密码类型，变量被设置为username:password类型
     some_var = "some value"
     cred1 = credentials("5f534b22-b547-4c16-ae2a-e166fb0c6e33")
     inbetween = "something in between"
     other_var = "${some_var}"
   }
   
-  agent any
+  agent any //any,none,node,label,docker,dockerfile,
   
   stages{
     stage("foo"){

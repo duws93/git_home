@@ -16,8 +16,30 @@ pipeline{
       agent{
         steps{
           def mysql = docker.build("mysql:5.7")
-          def mysql_container = mysql.run('--name mysql-server2 -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql -d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_bin')
+          def mysql_container = mysql.run('--name mysql-server -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql -d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_bin')
           echo "mysql container is running"
+        }
+      }
+    }
+    
+    stage('zabbix-server'){
+      agent{
+        steps{
+          def server = docker.build("zabbix/zabbix-server-mysql:latest")
+          def server_container = server.run('--name zabbix-server-mysql -it --restart=always -e DB_SERVER_HOST="mysql-server" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" --link mysql-server:mysql -p 10051:10051')
+          echo "zabbix-server container is running"
+        }
+      }
+    }
+    
+    stage('zabbix-web'){
+      agent{
+        steps{
+          def web = docker.build("zabbix/zabbix-web-nginx-mysql:latest")
+          def web_container = web.run('--name zabbix-web-nginx-mysql -it --restart=always -e DB_SERVER_HOST="mysql-server" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" --link mysql-server:mysql --link zabbix-server-mysql:zabbix-server -p 8080:80')
+          echo "zabbix-web container is running"
+        }
+      }
     }
   }
   

@@ -16,7 +16,7 @@ pipeline{
       agent{
         docker{
           reuseNode true
-          image mysql:5.7
+          image 'mysql:5.7'
           args '--name mysql-server2 -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql --character-set-server=utf8 --collation-server=utf8_bin'
         }
       }
@@ -29,7 +29,7 @@ pipeline{
       agent{
         docker{
           reuseNode true
-          image zabbix/zabbix-server-mysql:latest
+          image 'zabbix/zabbix-server-mysql:latest'
           args '--name zabbix-server-mysql2 -it --restart=always -e DB_SERVER_HOST="mysql-server" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" --link mysql-server:mysql2 -p 10052:10051'
         }
       }
@@ -42,7 +42,7 @@ pipeline{
       agent{
         docker{
           reuseNode true
-          image zabbix/zabbix-web-nginx-mysql:latest
+          image 'zabbix/zabbix-web-nginx-mysql:latest'
           args '--name zabbix-web-nginx-mysql2 -it --restart=always -e DB_SERVER_HOST="mysql-server" -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" --link mysql-server:mysql2 --link zabbix-server-mysql:zabbix-server2 -p 8081:80'
         }
       }

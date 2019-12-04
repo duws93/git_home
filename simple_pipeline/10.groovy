@@ -61,8 +61,6 @@ pipeline{
             to: "wenshu.du.ext@nokia-sbell.com",
             from: "wenshu.du.ext@nokia-sbell.com"
           )
-          //用于将生成的文件进行归档，配合使用include的pattern捕获匹配的文件
-          archiveArtifacts(artifacts: '**/target/*.jar', allowEmptyArchive: true) 
         }
         failure{
           emailext (
@@ -82,6 +80,5 @@ pipeline{
           from: "wenshu.du.ext@nokia-sbell.com"
           )
         }
-      }
-    }
+  }
 }

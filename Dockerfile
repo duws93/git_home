@@ -1,4 +1,3 @@
-#
 #FROM ubuntu:lts
 #MAINTAINER duws wenshu.du.ext@nokia-sbell.com
 #ENV https_proxy http://135.251.33.31:8080
@@ -25,4 +24,3 @@
 #ADD website /var/www/website
 #ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 #CMD ["/usr/sbin/apache2ctl","-D", "FOREGROUND"]
-#

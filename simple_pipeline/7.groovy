@@ -3,7 +3,9 @@ pipeline{
   agent {
     label "duws-3"
   }
+  //trigger定义pipeline被自动触发的方式
   triggers{
+    //上层工作流，将一组jobs定义为该pipeline触发的条件，如：只要列表中任一任务执行结束后，即可触发
     upstream(upstreamProjects: "5.groovy,6.groovy", threshold:  hudson.model.Result.SUCCESS)
   }
   stages{

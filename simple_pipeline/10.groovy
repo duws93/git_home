@@ -36,7 +36,7 @@ pipeline{
       steps{
         script{
           def web = docker.build("zabbix/zabbix-web-nginx-mysql:latest")
-          def web_container = web.run("--name zabbix-web-nginx-mysql -it --restart=always -e DB_SERVER_HOST='mysql-server' -e MYSQL_DATABASE='zabbix' -e MYSQL_USER='root' -e MYSQL_PASSWORD='root' -e MYSQL_ROOT_PASSWORD='root' --link mysql-server:mysql --link zabbix-server-mysql:zabbix-server -p 8080:80")
+          def web_container = web.run("--name zabbix-web-nginx-mysql -it --restart=always -e DB_SERVER_HOST='mysql-server' -e MYSQL_DATABASE='zabbix' -e MYSQL_USER='root' -e MYSQL_PASSWORD='root' -e MYSQL_ROOT_PASSWORD='root' --link mysql-server:mysql --link zabbix-server-mysql:zabbix-server -p 8088:80")
           echo "zabbix-web container is running"
         }
       }

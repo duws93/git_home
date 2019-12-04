@@ -14,7 +14,7 @@ pipeline{
   stages{
     stage('mysql'){
       steps{
-        sh 'docker run --name mysql-server -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql -d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_bin'
+        sh 'docker run --name mysql-server -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql -d mysql:5.7'
         echo "mysql container is running"
       }
     }

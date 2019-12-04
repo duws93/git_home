@@ -14,15 +14,10 @@ pipeline{
   stages{
     stage('mysql'){
       agent{
-        docker{
-          reuseNode true
-          image 'mysql:5.7'
-          args '--name mysql-server2 -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql --character-set-server=utf8 --collation-server=utf8_bin'
-        }
-      }
-      steps{
-        echo "${image} container is startting"
-      }
+        steps{
+          def mysql = docker.build("mysql:5.7")
+          def mysql_container = mysql.run("--name mysql-server2 -it --restart=always -e MYSQL_DATABASE="zabbix" -e MYSQL_USER="root" -e MYSQL_PASSWORD="root" -e MYSQL_ROOT_PASSWORD="root" -v /data/mysql:/var/lib/mysql -d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_bin")
+          echo "mysql container is running"
     }
     
     stage('zabbix-server'){

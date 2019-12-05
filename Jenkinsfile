@@ -4,9 +4,8 @@ pipeline {
     stage('evaluate branch'){
       steps{
         script{
-          BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
+          BRANCHES = sh returnStdout: true, script: "git branch -r | grep \/ | cut -d '/' -f2"
           echo "${BRANCHES}"
-          echo "${env.BRANCH}"
         }
       }
     }

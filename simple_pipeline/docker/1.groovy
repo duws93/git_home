@@ -1,4 +1,5 @@
 #!groovy
+//部署zabbix web服务
 pipeline{
   agent{
     node{

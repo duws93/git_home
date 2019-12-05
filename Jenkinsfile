@@ -1,13 +1,17 @@
 pipeline {
   agent {label 'duws-3'}
   stages {
-    stage('evaluate dev') {
-      when{
-        branch "dev"
-      }
+    stage('evaluate branch'){
       steps{
-        echo "you are in branch dev"
-        echo "you can deal your job in dev"
+        script{
+          BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
+        }
+        when{
+          branch '$BRANCHES'
+        }
+        step{
+          echo "you are in branch $BRANCHES"
+        }
       }
     }
   }

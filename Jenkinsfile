@@ -6,11 +6,11 @@ pipeline {
         script{
           BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
         }
-        when{
-          branch "${BRANCHES}"
-        }
-        echo "you are in branch ${BRANCHES}"
       }
+      when{
+        branch "${BRANCHES}"
+      }
+      echo "you are in branch ${BRANCHES}"
     }
   }
 }

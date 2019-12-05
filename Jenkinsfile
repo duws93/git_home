@@ -5,6 +5,7 @@ pipeline {
       steps{
         script{
           BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
+          echo "${BRANCHES}"
         }
       }
     }

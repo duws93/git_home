@@ -1,8 +1,3 @@
-FROM mysql:5.7
-MAINTAINER duws wenshu.du.ext@nokia-sbell.com
-ENV https_proxy http://135.251.33.31:8080
-ENV http_prpxy http://135.251.33.31:8080
-
 #FROM ubuntu:lts
 #MAINTAINER duws wenshu.du.ext@nokia-sbell.com
 #ENV https_proxy http://135.251.33.31:8080

@@ -1,10 +1,13 @@
 pipeline {
-  agent none
+  agent {label 'duws-3'}
   stages {
-    stage('Deploy') {
-      agent {label 'duws-3'}
-      steps {
-        echo 'this branch is dev'
+    stage('evaluate dev') {
+      when{
+        branch "dev"
+      }
+      steps{
+        echo "you are in branch dev"
+        echo "you can deal your job in dev"
       }
     }
   }

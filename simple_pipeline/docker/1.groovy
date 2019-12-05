@@ -14,7 +14,7 @@ pipeline{
   stages{
     //利用docker命令，执行dockerfile中的image生成
     stage('mysql'){
-      stpes{
+      steps{
         script{
           def mysql = docker.build("mysql:5.7")
           def mysql_container =  mysql.run("--name mysql-server -it --restart=always -e MYSQL_DATABASE='zabbix' -e MYSQL_USER='root' -e MYSQL_PASSWORD='root' -e MYSQL_ROOT_PASSWORD='root' -v /data/mysql:/var/lib/mysql")

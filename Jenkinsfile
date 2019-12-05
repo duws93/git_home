@@ -7,10 +7,14 @@ pipeline {
           BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
         }
       }
+    }
+    stage('judge branch'){
       when{
         branch "${BRANCHES}"
       }
-      sh 'echo "you are in ${BRANCHES}"'
+      steps{
+        sh 'echo "you are in ${BRANCHES}"'
+      }
     }
   }
 }

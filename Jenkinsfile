@@ -10,7 +10,9 @@ pipeline {
       when{
         branch "${BRANCHES}"
       }
-      echo "you are in branch ${BRANCHES}"
+      steps{
+        echo "you are in branch ${BRANCHES}"
+      }
     }
   }
 }

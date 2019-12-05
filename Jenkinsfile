@@ -7,11 +7,9 @@ pipeline {
           BRANCHES = sh returnStdout: true, script: 'git branch -r | grep -v HEAD'
         }
         when{
-          branch '$BRANCHES'
+          branch "${BRANCHES}"
         }
-        step{
-          echo "you are in branch $BRANCHES"
-        }
+        echo "you are in branch ${BRANCHES}"
       }
     }
   }

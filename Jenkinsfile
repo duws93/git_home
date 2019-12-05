@@ -3,10 +3,10 @@ pipeline {
   stages{
     stage('evaluate branch'){
       when{
-        branch "master"
+        branch "dev"
       }
       steps{
-        echo "work in master"
+        echo "work in dev"
       }
     }
   }

@@ -6,7 +6,7 @@ pipeline {
     timestamps()
     skipStageAfterUnstable()
     skipDefaultCheckOut true
-    buildDiscardeer logRotator(artifactDaysToKeepStr: '1', artifactNumToKeepStr: '1', daysToKeepStr: '10', numToKeepStr: '5')
+    buildDiscardeer logRotator(artifactDaysToKeepStr: '1',artifactNumToKeepStr:'1', daysToKeepStr:'10', numToKeepStr:'5')
   }
   stages{
     stage('拉取代码'){
@@ -15,7 +15,7 @@ pipeline {
         script{
           try{
             //下载git仓库代码,支持cherry pick 某个patch
-            checkout([$class:'GitSCM'，branches:[[name:'*/master']],doGenerateSubmoduleConfigurations: false, \
+            checkout([$class:'GitSCM',branches:[[name:'*/master']],doGenerateSubmoduleConfigurations: false, \
                       extensions: [[$class: 'CloneOption', noTags: true, shallow: true, depth: 1, honorRefspec:true]], \
                       submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5f534b22-b547-4c16-ae2a-e166fb0c6e33',\
                                                              refspec: '+refs/heads/master:refs/remotes/origin/master', \

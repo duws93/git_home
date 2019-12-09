@@ -4,9 +4,9 @@ pipeline {
     durabilityHint 'PERFORMANCE_OPTIMIZED'
     timeout(time:5,unit:'MINUTES')
     timestamps()
-    skipStageAfterUnstable()
-    skipDefaultCheckOut true
-    buildDiscardeer logRotator(artifactDaysToKeepStr: '1',artifactNumToKeepStr:'1', daysToKeepStr:'10', numToKeepStr:'5')
+    skipStagesAfterUnstable()
+    skipDefaultCheckout true
+    buildDiscarder logRotator(artifactDaysToKeepStr: '1',artifactNumToKeepStr:'1', daysToKeepStr:'10', numToKeepStr:'5')
   }
   stages{
     stage('拉取代码'){

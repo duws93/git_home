@@ -27,7 +27,7 @@ pipeline {
             warnError('拉取代码失败信息回调失败'){
               retry(5){httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', \
                        httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"pull\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                       timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
+                       timeout: 5, url: 'http://135.251.206.39:80/jenkins/job-finish', validResponseCodes: '200'//, validResponseContent: 'ok'
                       }
             }
           }
@@ -51,7 +51,7 @@ pipeline {
               retry(5) {
                 httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', \
                 httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"check\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//,validResponseContent: 'ok'
+                timeout: 5, url: 'http://135.251.206.39:80/jenkins/job-finish', validResponseCodes: '200'//,validResponseContent: 'ok'
               }
             }
           }
@@ -67,7 +67,7 @@ pipeline {
               httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_OCTETSTREAM', \
               customHeaders: [[maskValue: false, name: 'Content-Disposition', value: 'id=tmp.txt']], \
               httpMode: 'POST', ignoreSslErrors: true, multipartName: 'file', requestBody: "{\"id\":\"${JOB_NAME}\"}",\
-              timeout: 5, uploadFile: 'tmp.txt', url: 'http://135.251.206.39:80/jenkins'\
+              timeout: 5, uploadFile: 'tmp.txt', url: 'http://135.251.206.39:80/jenkins/job-finish'\
               ,validResponseCodes: '200'//, validResponseContent: 'ok'
             } 
           }catch (Exception err) {
@@ -78,7 +78,7 @@ pipeline {
               retry(5) {
                 httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON',\
                 httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"callback\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
+                timeout: 5, url: 'http://135.251.206.39:80/jenkins/job-finish', validResponseCodes: '200'//, validResponseContent: 'ok'
               }
             }
           }

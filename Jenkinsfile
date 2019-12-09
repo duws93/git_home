@@ -27,7 +27,7 @@ pipeline {
             warnError('拉取代码失败信息回调失败'){
               retry(5){httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', \
                        httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"pull\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                       timeout: 5, url: 'http://135.251.206.39:80', validResponseCodes: '200', validResponseContent: 'ok'
+                       timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
                       }
             }
           }
@@ -51,9 +51,33 @@ pipeline {
               retry(5) {
                 httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', \
                 httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"check\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                timeout: 5, url: 'http://135.251.206.39:80', validResponseCodes: '200',validResponseContent: 'ok'
+                timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//,validResponseContent: 'ok'
               }
             }
+          }
+        }
+      }
+    }
+    stage('返回依赖性文件校验'){
+      steps{
+        echo '正在校验返回依赖性文件'
+        script{
+          try{
+            retry(5){
+              httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_OCTETSTREAM', \
+              customHeaders: [[maskValue: false, name: 'Content-Disposition', value: 'id=tmp.txt']], \
+              httpMode: 'POST', ignoreSslErrors: true, multipartName: 'file', requestBody: "{\"id\":\"${JOB_NAME}\"}",\
+              timeout: 5, uploadFile: 'tmp.txt', url: 'http://135.251.206.39:80/jenkins'\
+              ,validResponseCodes: '200'//, validResponseContent: 'ok'
+            }catch(Exception err){
+              echo err.getMessage()
+              echo err.toString()
+              unstable '依赖性检查文件返回给erebus失败'
+              warnError('依赖性检查文件返回给erebus失败信息回调失败') {
+                retry(5) {
+                  httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON',\
+                  httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"callback\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
+                  timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
           }
         }
       }
@@ -64,7 +88,7 @@ pipeline {
         retry(5){
           httpRequest contentType: 'APPLICATION_OCTETSTREAM', customHeaders: [[maskValue: false, name: 'Content-type', value: 'application/json'], [maskValue: false, name: 'Accept', value: 'application/json']], \
           httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-          responseHandle: 'NONE', timeout: 5, url: 'http://135.251.206.39:80',validResponseCodes: '200'//,validResponseContent: 'ok'
+          responseHandle: 'NONE', timeout: 5, url: 'http://135.251.206.39:80/jenkins',validResponseCodes: '200'//,validResponseContent: 'ok'
         }
       }
     }

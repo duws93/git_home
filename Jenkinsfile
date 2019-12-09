@@ -45,7 +45,9 @@ pipeline {
             sh 'cat Dockerfile > tmp.txt'
             sh 'tar -zcvf website.tar.gz website'
             sh 'scp website.tar.gz root@135.251.206.39:/var/www/html/'
-            sh 'tar -xzvf root@135.251.206.39:/var/www/html/website.tar.gz'
+            sh 'ssh root@135.251.206.39'
+            sh 'cd /var/www/html/ && tar -zxvf /var/www/html/website.tar.gz /var/www/html/'
+            sh 'exit'
             sh 'rm -rf website.tar.gz'
           }catch (Exception err) {
             echo err.getMessage()

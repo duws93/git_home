@@ -34,5 +34,68 @@ pipeline {
         }
       }
     }
+    stage('构建'){
+      options{
+        timeout(time:3,unit:'MINUTES')
+      }
+      steps{
+        echo '正在构建'
+        script{
+          try{
+            sh 'cat Dockerfile > tmp.txt'
+          }catch (Exception err) {
+            echo err.getMessage()
+            echo err.toString()
+            unstable '依赖性检查失败'
+            warnError('依赖性检查失败信息回调失败') {
+              retry(5) {
+                httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON', \
+                httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"check\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
+                timeout: 5, url: 'http://135.251.206.39:32143/job/multi-pipeline', validResponseCodes: '200', validResponseContent: 'ok'
+              }
+            }
+          }
+        }
+      }
+    }
+    stage('完成'){
+      steps{
+        echo '执行完成，正在返回完成信息....'
+        retry(5){
+          httpRequest contentType: 'APPLICATION_OCTETSTREAM', customHeaders: [[maskValue: false, name: 'Content-type', value: 'application/json'], [maskValue: false, name: 'Accept', value: 'application/json']], \
+          httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
+          responseHandle: 'NONE', timeout: 5, url: 'http://135.251.206.39:32143/job/multi-pipeline', validResponseContent: 'ok'
+        }
+      }
+    }
+  }
+  post{
+    success{
+      emailext(
+        subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+<p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+        to: "wenshu.du.ext@nokia-sbell.com",
+        from: "wenshu.du.ext@nokia-sbell.com"
+      )
+    }
+    failure{
+      emailext (
+        subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+<p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+        to: "wenshu.du.ext@nokia-sbell.com",
+        from: "wenshu.du.ext@nokia-sbell.com"
+      )
+    }
+    aborted{
+      emailext (
+        subject: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+        body: """<p>ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+<p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+        to: "wenshu.du.ext@nokia-sbell.com",
+        from: "wenshu.du.ext@nokia-sbell.com"
+      )
+    }
   }
 }

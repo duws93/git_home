@@ -78,6 +78,9 @@ pipeline {
                   httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON',\
                   httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"callback\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
                   timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
+                }
+              }
+            }
           }
         }
       }

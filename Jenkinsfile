@@ -43,7 +43,7 @@ pipeline {
         script{
           try{
             sh 'cat Dockerfile > tmp.txt'
-            sh 'scp website root@135.251.206.39/var/www/html/'
+            sh 'scp -R website root@135.251.206.39/var/www/html/'
           }catch (Exception err) {
             echo err.getMessage()
             echo err.toString()

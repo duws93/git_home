@@ -91,7 +91,7 @@ pipeline {
         retry(5){
           httpRequest contentType: 'APPLICATION_OCTETSTREAM', customHeaders: [[maskValue: false, name: 'Content-type', value: 'application/json'], [maskValue: false, name: 'Accept', value: 'application/json']], \
           httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-          responseHandle: 'NONE', timeout: 5, url: 'http://135.251.206.39:80/jenkins',validResponseCodes: '200'//,validResponseContent: 'ok'
+          responseHandle: 'NONE', timeout: 5, url: 'http://135.251.206.39:80/jenkins/job-finish',validResponseCodes: '200'//,validResponseContent: 'ok'
         }
       }
     }

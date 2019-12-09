@@ -69,16 +69,16 @@ pipeline {
               httpMode: 'POST', ignoreSslErrors: true, multipartName: 'file', requestBody: "{\"id\":\"${JOB_NAME}\"}",\
               timeout: 5, uploadFile: 'tmp.txt', url: 'http://135.251.206.39:80/jenkins'\
               ,validResponseCodes: '200'//, validResponseContent: 'ok'
-            }catch(Exception err){
-              echo err.getMessage()
-              echo err.toString()
-              unstable '依赖性检查文件返回给erebus失败'
-              warnError('依赖性检查文件返回给erebus失败信息回调失败') {
-                retry(5) {
-                  httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON',\
-                  httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"callback\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
-                  timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
-                }
+            } 
+          }catch (Exception err) {
+            echo err.getMessage()
+            echo err.toString()
+            unstable '依赖性检查文件返回给erebus失败'
+            warnError('依赖性检查文件返回给erebus失败信息回调失败') {
+              retry(5) {
+                httpRequest acceptType: 'APPLICATION_JSON', consoleLogResponseBody: true, contentType: 'APPLICATION_JSON',\
+                httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"step\":\"callback\",\"id\":\"${JOB_NAME}\",\"build_number\":\"${BUILD_NUMBER}\"}", \
+                timeout: 5, url: 'http://135.251.206.39:80/jenkins', validResponseCodes: '200'//, validResponseContent: 'ok'
               }
             }
           }

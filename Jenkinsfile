@@ -4,7 +4,7 @@ pipeline {
     durabilityHint 'PERFORMANCE_OPTIMIZED'
     timeout(time:5,unit:'MINUTES')
     timestamps()
-    skipStagesAfterUnstable()
+    skipStagesAfterUnstable() 
     skipDefaultCheckout true
     buildDiscarder logRotator(artifactDaysToKeepStr: '1',artifactNumToKeepStr:'1', daysToKeepStr:'10', numToKeepStr:'5')
   }

@@ -16,7 +16,7 @@ pipeline {
           try{
             //下载git仓库代码,支持cherry pick 某个patch
             checkout([$class:'GitSCM',branches:[[name:'*/master']],doGenerateSubmoduleConfigurations: false, \
-                      extensions: [[$class: 'CloneOption', noTags: true, shallow: true, depth: 1, honorRefspec:true]], \
+                      extensions: [[$class: 'CleanBeforeCheckout']], \
                       submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5f534b22-b547-4c16-ae2a-e166fb0c6e33',\
                                                              refspec: '+refs/heads/master:refs/remotes/origin/master', \
                                                              url: 'https://github.com/duws93/git_home.git']]])

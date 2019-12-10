@@ -10,7 +10,7 @@ podTemplate(
     ],
     {
         //node = the pod label
-        node('135.251.206.37'){
+        node('duws-2'){
             //container = the container label
             stage('Build'){
                 container('golang'){

@@ -107,19 +107,19 @@ pipeline {
       }
     }
   }
-  def BUILD_VERSION = version()
-  if(BUILD_VERSION){
-    echo "duws2 building version ${BUILD_VERSION}"
+  def BUILD_VERSION2 = version()
+  if(BUILD_VERSION2){
+    echo "duws2 building version ${BUILD_VERSION2}"
   }  
-  def GIT_REVISION = GIT_Revision()
-  if(GIT_REVISION){
-    echo "duws2 git_revision: ${GIT_REVISION}"
+  def GIT_REVISION2 = GIT_Revision()
+  if(GIT_REVISION2){
+    echo "duws2 git_revision: ${GIT_REVISION2}"
   }
   post{
     success{
       emailext(
         subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
+        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}][${env.BUILD_VERSION2}][${env.GIT_REVISION2}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"
@@ -128,7 +128,7 @@ pipeline {
     failure{
       emailext (
         subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
+        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}][${env.BUILD_VERSION2}][${env.GIT_REVISION2}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"
@@ -137,7 +137,7 @@ pipeline {
     aborted{
       emailext (
         subject: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
+        body: """<p>ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}][${env.BUILD_VERSION2}][${env.GIT_REVISION2}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"

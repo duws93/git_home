@@ -33,14 +33,14 @@ pipeline {
           }
         }
       }
-    }
-    def BUILD_VERSION = version()
-    if(BUILD_VERSION){
-      echo "building version ${BUILD_VERSION}"
-    }  
-    def GIT_REVISION = GIT_Revision()
-    if(GIT_REVISION){
-      echo "git_revision: ${GIT_REVISION}"
+      def BUILD_VERSION = version()
+      if(BUILD_VERSION){
+        echo "building version ${BUILD_VERSION}"
+      }  
+      def GIT_REVISION = GIT_Revision()
+      if(GIT_REVISION){
+        echo "git_revision: ${GIT_REVISION}"
+      }
     }
     stage('构建'){
       options{

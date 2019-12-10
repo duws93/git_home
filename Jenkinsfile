@@ -8,6 +8,14 @@ pipeline {
     skipDefaultCheckout true
     buildDiscarder logRotator(artifactDaysToKeepStr: '1',artifactNumToKeepStr:'1', daysToKeepStr:'10', numToKeepStr:'5')
   }
+  def BUILD_VERSION = version()
+  if(BUILD_VERSION){
+    echo "duws1 building version ${BUILD_VERSION}"
+  }  
+  def GIT_REVISION = GIT_Revision()
+  if(GIT_REVISION){
+    echo "duws1 git_revision: ${GIT_REVISION}"
+  }
   stages{
     stage('拉取代码'){
       steps{
@@ -32,14 +40,6 @@ pipeline {
             }
           }
         }
-      }
-      def BUILD_VERSION = version()
-      if(BUILD_VERSION){
-        echo "building version ${BUILD_VERSION}"
-      }  
-      def GIT_REVISION = GIT_Revision()
-      if(GIT_REVISION){
-        echo "git_revision: ${GIT_REVISION}"
       }
     }
     stage('构建'){
@@ -106,6 +106,14 @@ pipeline {
         }
       }
     }
+  }
+  def BUILD_VERSION = version()
+  if(BUILD_VERSION){
+    echo "duws2 building version ${BUILD_VERSION}"
+  }  
+  def GIT_REVISION = GIT_Revision()
+  if(GIT_REVISION){
+    echo "duws2 git_revision: ${GIT_REVISION}"
   }
   post{
     success{

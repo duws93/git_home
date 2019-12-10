@@ -16,8 +16,8 @@ pipeline {
           try{
             //下载git仓库代码,支持cherry pick 某个patch
             checkout([$class:'GitSCM',branches:[[name:'*/master']],doGenerateSubmoduleConfigurations: false, \
-                      extensions: [[$class: 'CleanBeforeCheckout']], \
-                      submoduleCfg: [], userRemoteConfigs: [[credentialsId: '5f534b22-b547-4c16-ae2a-e166fb0c6e33',\
+                      extensions: [[$class: 'CloneOption', noTags: true, shallow: true, depth: 1, honorRefspec:true]], \
+                      submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'f1d1e486-4a23-43fe-9f45-19e17e556705',\
                                                              refspec: '+refs/heads/master:refs/remotes/origin/master', \
                                                              url: 'https://github.com/duws93/git_home.git']]])
           }catch(Exception err){
@@ -30,14 +30,6 @@ pipeline {
                        timeout: 5, url: 'http://135.251.206.39:80/jenkins/job-finish', validResponseCodes: '200'//, validResponseContent: 'ok'
                       }
             }
-          }
-          def BUILD_VERSION = version()
-          if(BUILD_VERSION){
-            echo "duws1 building version ${BUILD_VERSION}"
-          }  
-          def GIT_REVISION = GIT_Revision()
-          if(GIT_REVISION){
-            echo "duws1 git_revision: ${GIT_REVISION}"
           }
         }
       }

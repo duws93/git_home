@@ -10,7 +10,7 @@ podTemplate(
     ],
     {
         //node = the pod label
-        node('duws-2'){
+        node('test-pod'){
             //container = the container label
             stage('Build'){
                 container('golang'){

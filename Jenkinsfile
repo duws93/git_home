@@ -31,6 +31,14 @@ pipeline {
                       }
             }
           }
+          def BUILD_VERSION = version()
+          if (BUILD_VERSION) {
+            echo "Building version ${BUILD_VERSION}
+          } 
+          def GIT_REVISION = GIT_Revision()
+          if (GIT_REVISION) {
+            echo "GIT_REVISION: ${GIT_REVISION}"
+          }
         }
       }
     }
@@ -43,9 +51,9 @@ pipeline {
         script{
           try{
             sh 'cat Dockerfile > tmp.txt'
-            sh 'tar -zcvf website.tar.gz website'
-            sh 'scp website.tar.gz root@135.251.206.39:/var/www/html/'
-            sh 'rm -rf website.tar.gz'
+            //sh 'tar -zcvf website.tar.gz website'
+            //sh 'scp website.tar.gz root@135.251.206.39:/var/www/html/'
+            //sh 'rm -rf website.tar.gz'
           }catch (Exception err) {
             echo err.getMessage()
             echo err.toString()
@@ -103,7 +111,7 @@ pipeline {
     success{
       emailext(
         subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"

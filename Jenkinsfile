@@ -31,10 +31,6 @@ pipeline {
                       }
             }
           }
-          def BUILD_VERSION = version()
-          if(BUILD_VERSION){
-            echo "Building version ${BUILD_VERSION}"
-          }
           def GIT_REVISION = GIT_Revision()
           if(GIT_REVISION){
             echo "GIT_REVISION: ${GIT_REVISION}"
@@ -111,7 +107,7 @@ pipeline {
     success{
       emailext(
         subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
+        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.GIT_REVISION}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"

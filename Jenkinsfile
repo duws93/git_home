@@ -34,6 +34,14 @@ pipeline {
         }
       }
     }
+    def BUILD_VERSION = version()
+    if(BUILD_VERSION){
+      echo "building version ${BUILD_VERSION}"
+    }  
+    def GIT_REVISION = GIT_Revision()
+    if(GIT_REVISION){
+      echo "git_revision: ${GIT_REVISION}"
+    }
     stage('构建'){
       options{
         timeout(time:3,unit:'MINUTES')
@@ -103,7 +111,7 @@ pipeline {
     success{
       emailext(
         subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"
@@ -112,7 +120,7 @@ pipeline {
     failure{
       emailext (
         subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"
@@ -121,7 +129,7 @@ pipeline {
     aborted{
       emailext (
         subject: "ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-        body: """<p>ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+        body: """<p>ABORTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}][${env.BUILD_VERSION}][${env.GIT_REVISION}]':</p>
 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
         to: "wenshu.du.ext@nokia-sbell.com",
         from: "wenshu.du.ext@nokia-sbell.com"

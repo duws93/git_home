@@ -32,11 +32,11 @@ pipeline {
             }
           }
           def BUILD_VERSION = version()
-          if (BUILD_VERSION) {
-            echo "Building version ${BUILD_VERSION}
-          } 
+          if(BUILD_VERSION){
+            echo "Building version ${BUILD_VERSION}"
+          }
           def GIT_REVISION = GIT_Revision()
-          if (GIT_REVISION) {
+          if(GIT_REVISION){
             echo "GIT_REVISION: ${GIT_REVISION}"
           }
         }

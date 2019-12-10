@@ -10,7 +10,7 @@ podTemplate(
     ],
     {
         //node = the pod label
-        node('test-pod'){
+        node('duws-2'){
             //container = the container label
             stage('Build'){
                 container('golang'){
@@ -18,7 +18,7 @@ podTemplate(
                 }
             }
             stage('Build Docker Image'){
-                container(‘docker’){
+                container('docker'){
                     // This is where we build the Docker image
                 }
             }

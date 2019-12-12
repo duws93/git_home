@@ -3,7 +3,7 @@
 pipeline{
   agent{
     node{
-      label "duws-3"
+      label "135.251.206.38"
       customWorkspace "/root/workspace/zabbix"
     }
   }

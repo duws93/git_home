@@ -1,31 +1,30 @@
-def label = "135.251.206.37"
-podTemplate(
-    label: label, 
-    cloud: 'kubernetes',
-    containers: [
-        containerTemplate(name: '135.251.206.37', image: 'cnych/jenkins:v1')
-    ],
-    volumes: [
-        hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-        hostPathVolume(mounntPath:'/usr/bin/docker',hostPath:'/usr/bin/docker')
-    ])
-    {
-        //node = the pod label
-        node(label){
-            stage('get a maven project'){
-                container(label){
-                    stage('wait for exec check'){
-                        sh 'sleep 1'
-                        sh 'echo $JAVA_HOME'
-                        sh 'mvn -v'
-                    }
-                    stage('get maven env'){
-                        sh 'cat /etc/resolv.conf'
-                        sh 'cat /etc/issue'
-                        sh 'uname -a'
-                        sh 'env'
-                    }
+/*
+  脚本实现Jenkins启动新的子节点，在子节点中部署pod
+  这里定义了每一个stage里面需要的镜像。
+  测试阶段部署了同一个镜像，在不同stage里面执行不同操作
+  第一个执行echo命令，
+  第二个执行镜像内部main.exe程序
+*/
+def label = "testpod-${UUID.randomUUID().toString()}"
+podTemplate(label: label, cloud: 'kubernetes', containers: [
+    containerTemplate(name: 'build', image: 'jfeng45/k8sdemo-backend:1.0', ttyEnabled: true, command: 'cat'),
+    containerTemplate(name: 'run', image: 'jfeng45/k8sdemo-backend:1.0', ttyEnabled: true, command: 'cat')
+  ]) {
+    node(label) {
+        stage('build a go project') {
+            container('build') {
+                stage('Build a go project') {
+                    sh 'echo hello'
                 }
             }
         }
+        stage('Run a Golang project') {
+            container('run') {
+                stage('Run a Go project') {
+                    sh '/root/main.exe'
+                }
+            }
+        }
+
     }
+}

@@ -3,7 +3,7 @@ podTemplate(
     label: label, 
     cloud: 'kubernetes',
     containers: [
-        containerTemplate(name: 'jnlp-slave', image: 'cnych/jenkins:v1')
+        containerTemplate(name: '135.251.206.37', image: 'cnych/jenkins:v1')
     ],
     volumes: [
         hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),

@@ -5,7 +5,7 @@ pipeline {
     maven "apache-maven-3.6.3"
     jdk "default"
   }
-  agent { label "duws-5"}
+  agent { label "135.251.206.26"}
   stages{
     stage("foo"){
       steps{

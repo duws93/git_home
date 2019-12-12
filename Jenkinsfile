@@ -1,5 +1,5 @@
 pipeline {
-  agent {label 'duws-3'}
+  agent {label '135.251.206.38'}
   stages{
     stage('evaluate branch'){
       when{

@@ -14,7 +14,7 @@ pipeline{
   inherited_env = "\${build_num_env} is inherited"
   }
   
-  agent { label "duws-3"}
+  agent { label "135.251.206.38"}
 
   //触发器定义如何触发作业。
   //在这里，作业仍然可以手动或由webhook触发。

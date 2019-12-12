@@ -1,7 +1,7 @@
-def label = "jnlp-slave"
+def label = "135.251.206.37"
 podTemplate(
     label: label, 
-    cloud: 'kubernetes'
+    cloud: 'kubernetes',
     containers: [
         containerTemplate(name: 'jnlp-slave', image: 'cnych/jenkins:v1')
     ],

@@ -3,7 +3,7 @@ pipeline{
   agent{
     //应用在多分支pipeline或者SCMchang场景
     dockerfile{
-      label "duws-3"
+      label "135.251.206.38"
       //定义dockerfile来运行docker命令
       filename "simple_pipeline/Dockerfile.alternate"
       //dockers命令运行挂载参数

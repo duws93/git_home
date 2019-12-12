@@ -4,11 +4,11 @@ pipeline{
     FOO = credentials("f1d1e486-4a23-43fe-9f45-19e17e556705")
   }
   
-  agent { label "duws-3" }
+  agent { label "135.251.206.38" }
   /*类似使用，但可使用customWorkspace来自定义工作空间
   agent{
     node{
-      label "duws-3"
+      label "135.251.206.38"
       customWorkspace '/root/dir'
     }
   }

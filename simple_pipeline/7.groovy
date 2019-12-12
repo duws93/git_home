@@ -1,7 +1,7 @@
 #!groovy
 pipeline{
   agent {
-    label "duws-3"
+    label "135.251.206.38"
   }
   //trigger定义pipeline被自动触发的方式
   triggers{
@@ -11,7 +11,7 @@ pipeline{
   stages{
     stage('stash'){
       agent{
-        label "duws-3"
+        label "135.251.206.38"
       }
       steps{
         writeFile file: "a.txt", text: "$BUILD_NUMBER"
@@ -26,7 +26,7 @@ pipeline{
     
     stage("unstash"){
       agent{
-        label "duws-2"
+        label "135.251.206.37"
       }
       steps{
         //执行脚本型pipeline，使用script{}

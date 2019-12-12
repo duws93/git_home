@@ -1,7 +1,7 @@
 pipeline{
   agent{
     node{
-      label "duws-5"
+      label "135.251.206.26"
       customWorkspace '/root/workspace/pipeline'
     }
   }
@@ -23,7 +23,7 @@ pipeline{
         stage('test on duws-2'){
           agent { 
             node{
-              label "duws-2"
+              label "135.251.206.37"
               customWorkspace '/root/workspace/pipeline'
             }
           }
@@ -34,7 +34,7 @@ pipeline{
         stage('test on duws-1'){
           agent {
             node{
-              label "duws-1"
+              label "135.251.206.36"
               customWorkspace '/root/workspace/pipeline'
             }
           }

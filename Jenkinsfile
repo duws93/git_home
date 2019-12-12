@@ -1,5 +1,5 @@
 pipeline {
-  agent {label 'duws-3'}
+  agent {label '135.251.206.38'}
   options{
     durabilityHint 'PERFORMANCE_OPTIMIZED'
     timeout(time:5,unit:'MINUTES')

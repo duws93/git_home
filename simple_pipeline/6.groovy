@@ -1,6 +1,6 @@
 #!groovy
 pipeline {
-  agent { label "duws-3" }
+  agent { label "135.251.206.38" }
 
   environment {
       // This returns 0 or 1 depending on whether build number is even or odd

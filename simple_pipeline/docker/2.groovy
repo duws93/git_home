@@ -13,7 +13,7 @@ podTemplate(label:label, cloud: 'kubernetes',
     stage('get a maven project'){
       container(label){
         stage('wait for exec check'){
-          sh 'kubectl get pod -n jekkins'
+          sh 'kubectl get pod'
         }
       }
     }

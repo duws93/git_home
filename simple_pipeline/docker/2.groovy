@@ -1,5 +1,5 @@
 /*
-  配置容器版Jenkins使用宿主机得docker命令
+  配置容器版Jenkins使用宿主机得kubectl命令
 */
 def label="jnlp-slave"
 podTemplate(label:label, cloud: 'kubernetes', 

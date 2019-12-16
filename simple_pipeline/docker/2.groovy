@@ -7,15 +7,15 @@ podTemplate(label:label, cloud: 'kubernetes',
             volumes:[
               hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker'),
               hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-              hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube'),
-              hostPathVolume(mountPath: '/usr/bin/kubectl', hostPath: '/usr/bin/kubectl')
+              hostPathVolume(mountPath: '/usr/local/bin/kubectl', hostPath: '/usr/local/bin/kubectl'),
+              hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube')
             ]
            ){
   node(label){
     stage('get a maven project'){
       container(label){
         stage('wait for exec check'){
-          sh 'which kubectl'
+          sh 'ls -ltr /usr/local/bin/kubectl'
         }
       }
     }

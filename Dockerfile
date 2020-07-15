@@ -24,3 +24,4 @@
 #ADD website /var/www/website
 #ADD apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 #CMD ["/usr/sbin/apache2ctl","-D", "FOREGROUND"]
+FROM busybox
